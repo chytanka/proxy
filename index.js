@@ -3,7 +3,7 @@ const cors = require('cors');
 const axios = require('axios');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 corsOptions = {
     // origin: 'http://192.168.43.243:4200',
