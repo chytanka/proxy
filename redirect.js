@@ -40,7 +40,7 @@ corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.static('public'));
 
-app.get('/api', async (req, res) => {
+app.get('/redirect', async (req, res) => {
     try {
         const apiUrl = req.query.url;
 
