@@ -96,29 +96,33 @@ function decrementNumSubscribers() {
 
 async function getRedirectUrl(url) {
     try {
-      const response = await fetch(url, {
-        redirect: 'manual', // Забороняємо автоматичне слідування за редіректами
-        validateStatus: status => status >= 200 && status < 400,
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        const response = await fetch(url, {
+            redirect: 'manual', // Забороняємо автоматичне слідування за редіректами
+            validateStatus: status => status >= 200 && status < 400,
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Connection': 'keep-alive'
+            },
+            timeout: 5000
+        });
+
+        // Якщо статус відповіді 301 або 302, повертаємо URL редіректу
+        if (response.status === 301 || response.status === 302) {
+            return {
+                status: response.status,
+                redirectUrl: response.headers.get('location')
+            };
+        } else {
+            const data = await response.text();
+            return {
+                status: response.status,
+                data: data,
+                redirectUrl: null
+            };
         }
-      });
-  
-      // Якщо статус відповіді 301 або 302, повертаємо URL редіректу
-      if (response.status === 301 || response.status === 302) {
-        return {
-          status: response.status,
-          redirectUrl: response.headers.get('location')
-        };
-      } else {
-        const data = await response.text();
-        return {
-          status: response.status,
-          data: data,
-          redirectUrl: null
-        };
-      }
     } catch (error) {
-      throw error;
+        throw error;
     }
-  }
+}
