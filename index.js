@@ -96,27 +96,25 @@ function decrementNumSubscribers() {
 
 async function getRedirectUrl(url) {
     try {
-        const response = await axios.get(url, {
-            maxRedirects: 0,
-            timeout: 10000, // Встановлюємо таймаут в 10 секунд
-      validateStatus: function (status) {
-        return status >= 200 && status < 400; // Приймаємо статуси від 200 до 399
-      }
-        });
-
+      const response = await fetch(url, {
+        redirect: 'manual' // Забороняємо автоматичне слідування за редіректами
+      });
+  
+      // Якщо статус відповіді 301 або 302, повертаємо URL редіректу
+      if (response.status === 301 || response.status === 302) {
         return {
-            status: response.status,
-            redirectUrl: response.headers.location
+          status: response.status,
+          redirectUrl: response.headers.get('location')
         };
+      } else {
+        const data = await response.text();
+        return {
+          status: response.status,
+          data: data,
+          redirectUrl: null
+        };
+      }
     } catch (error) {
-        if (error.response && (error.response.status === 301 || error.response.status === 302)) {
-
-            return {
-                status: error.response.status,
-                redirectUrl: error.response.headers.location
-            };
-        } else {
-            throw error;
-        }
+      throw error;
     }
-}
+  }
