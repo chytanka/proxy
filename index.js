@@ -98,14 +98,10 @@ async function getRedirectUrl(url) {
     try {
         const response = await axios.get(url, {
             maxRedirects: 0,
-            validateStatus: function (status) {
-                return status >= 200 && status < 400;
-            }
         });
 
         return {
             status: response.status,
-            data: response.data,
             redirectUrl: response.headers.location
         };
     } catch (error) {
