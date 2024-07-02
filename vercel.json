@@ -10,6 +10,14 @@
         {
             "src": "/api",
             "dest": "/index.js"
+        },
+        {
+            "src": "/count",
+            "dest": "/index.js"
+        },
+        {
+            "src": "/redirect",
+            "dest": "/redirect.js"
         }
     ]
 }
