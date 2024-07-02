@@ -98,6 +98,10 @@ async function getRedirectUrl(url) {
     try {
         const response = await axios.get(url, {
             maxRedirects: 0,
+            timeout: 10000, // Встановлюємо таймаут в 10 секунд
+      validateStatus: function (status) {
+        return status >= 200 && status < 400; // Приймаємо статуси від 200 до 399
+      }
         });
 
         return {
