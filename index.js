@@ -14,7 +14,7 @@ app.use(cors(corsOptions));
 app.use(express.static('public'));
 
 
-export class Base64 {
+ class Base64 {
     static toBase64(input) {
         return btoa(encodeURIComponent(input)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
     }
