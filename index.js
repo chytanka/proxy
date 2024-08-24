@@ -14,7 +14,7 @@ app.use(cors(corsOptions));
 app.use(express.static('public'));
 
 
- class Base64 {
+class Base64 {
     static toBase64(input) {
         return btoa(encodeURIComponent(input)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
     }
@@ -39,10 +39,13 @@ app.use(express.static('public'));
 app.get('/api', async (req, res) => {
     try {
         const url = req.query.url;
+        const ref = req.query.ref;
 
         const apiUrl = Base64.isBase64(url) ? Base64.fromBase64(url) : url;
 
-        const response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
+        const headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', 'Referer': ref }
+
+        const response = await axios.get(apiUrl, { responseType: 'arraybuffer', headers });
 
         const contentType = response.headers['content-type'];
 
