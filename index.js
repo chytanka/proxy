@@ -13,8 +13,8 @@ const limiter = rateLimit({
 });
 
 corsOptions = {
-    // origin: [/\.chytanka\.ink$/, 'https://chytanka.ink'],
-    // optionsSuccessStatus: 200
+    origin: [/\.chytanka\.ink$/, 'https://chytanka.ink'],
+    optionsSuccessStatus: 200
 }
 
 const allowedDomains = [
