@@ -13,8 +13,8 @@ const limiter = rateLimit({
 });
 
 corsOptions = {
-    origin: [/\.chytanka\.ink$/, 'https://chytanka.ink'],
-    optionsSuccessStatus: 200
+    // origin: [/\.chytanka\.ink$/, 'https://chytanka.ink'],
+    // optionsSuccessStatus: 200
 }
 
 const allowedDomains = [
@@ -56,7 +56,13 @@ app.get('/api', async (req, res) => {
             return res.status(403).send();
         }
 
-        const headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36', 'Referer': ref }
+        const authorizationHeader = req.headers.authorization
+        
+        const headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+            'Referer': ref,
+            "Authorization": authorizationHeader
+        }
 
         const response = await axios.get(apiUrl, { responseType: 'arraybuffer', headers });
 
