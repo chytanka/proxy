@@ -6,14 +6,20 @@ const app = express();
 const rateLimit = require('express-rate-limit');
 
 const port = process.env.PORT || 5000;
+const isDev = process.env.NODE_ENV === 'dev';
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100,
+    max: 1000,
 });
 
 corsOptions = {
     origin: [/\.chytanka\.ink$/, /\.chytanka\.github\.io$/, 'https://chytanka.ink', 'https://chytanka.github.io'],
+    optionsSuccessStatus: 200
+}
+
+corsOptionsDev = {
+    origin: true,
     optionsSuccessStatus: 200
 }
 
@@ -38,7 +44,8 @@ function isAllowedHost(hostname) {
     );
 }
 
-app.use(cors(corsOptions));
+app.use(cors(isDev ? corsOptionsDev : corsOptions));
+
 app.use(express.static('public'));
 app.use('/api', limiter);
 
@@ -57,7 +64,7 @@ app.get('/api', async (req, res) => {
         }
 
         const authorizationHeader = req.headers.authorization
-        
+
         const headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
             'Referer': ref,
