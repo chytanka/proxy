@@ -5,7 +5,8 @@ const Base64 = require('./base64');
 const app = express();
 const rateLimit = require('express-rate-limit');
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3003;
+const host = process.env.HOST || '127.0.0.1';
 const isDev = process.env.NODE_ENV === 'dev';
 
 const limiter = rateLimit({
@@ -87,6 +88,6 @@ app.get('/', async (req, res) => {
     res.status(403).send()
 })
 
-app.listen(port, '127.0.0.1', () => {
-    console.log(`Proxy server listening at http://localhost:${port}`);
+app.listen(port, host, () => {
+    console.log(`Proxy server listening at http://${host}:${port}`);
 });
