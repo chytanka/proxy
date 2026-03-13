@@ -36,7 +36,8 @@ const allowedDomains = [
     'redd.it',
     'telegra.ph',
     'yande.re',
-    'b-cdn.net'
+    'b-cdn.net',
+    'api.zenko.online'
 ];
 
 function isAllowedHost(hostname) {
